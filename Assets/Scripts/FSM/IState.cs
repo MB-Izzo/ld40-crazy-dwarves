@@ -1,6 +1,7 @@
 ﻿public interface IState
 {
 	void Enter();
-	void Execute();
+	IState Execute();
 	void Exit();
+    eStateType GetStateType();
 } 

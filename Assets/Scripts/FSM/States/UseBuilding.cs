@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,13 +15,18 @@ public class UseBuilding : IState {
 
 	}
 
-	public void Execute()
+	public IState Execute()
 	{
-
+        return null;
 	}
 
 	public void Exit()
 	{
 		
 	}
+
+    public eStateType GetStateType()
+    {
+        return eStateType.using_building;
+    }
 }
