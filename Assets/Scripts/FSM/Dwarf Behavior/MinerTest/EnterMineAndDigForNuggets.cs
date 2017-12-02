@@ -13,7 +13,7 @@ public sealed class EnterMineAndDigForNugget :  FSMState<Miner> {
 	
 		
 	public override void Enter (Miner m) {
-		if (m.Location != Locations.goldmine) {
+		if (m._location != Locations.goldmine) {
 			Debug.Log("Entering the mine...");
 			m.ChangeLocation(Locations.goldmine);
 		}
@@ -21,7 +21,7 @@ public sealed class EnterMineAndDigForNugget :  FSMState<Miner> {
 	
 	public override void Execute (Miner m) {		
 		m.AddToGoldCarried(1);
-		Debug.Log("Picking ap nugget and that's..." + m.GoldCarried);
+		Debug.Log("Picking ap nugget and that's..." + m.gold_carried);
 		m.IncreaseFatigue();		
 		if (m.PocketsFull())
 			m.ChangeState(VisitBankAndDepositGold.Instance);

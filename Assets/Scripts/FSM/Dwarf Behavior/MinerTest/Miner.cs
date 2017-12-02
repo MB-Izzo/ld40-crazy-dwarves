@@ -6,19 +6,19 @@ public class Miner : MonoBehaviour {
 	
 	private FiniteStateMachine<Miner> FSM;
 	
-	public Locations         	Location = Locations.goldmine;
-	public int                   GoldCarried = 0;
-	public int                   MoneyInBank  = 0;
-	public int                   Thirst = 0;
-	public int                   Fatigue = 0;
+	public Locations _location = Locations.goldmine;
+	public int gold_carried = 0;
+	public int money_in_bank  = 0;
+	private int _thirst = 0;
+	private int  _fatigue = 0;
 	
 	public void AddToGoldCarried(int amount) {
-		GoldCarried += amount;
+		gold_carried += amount;
 	}
 	
 	public void AddToMoneyInBank(int amount ) {
-		MoneyInBank += amount;
-		GoldCarried = 0;
+		money_in_bank += amount;
+		gold_carried = 0;
 	}
 	
 	public bool RichEnough() {
@@ -26,17 +26,17 @@ public class Miner : MonoBehaviour {
 	}
 	
 	public bool PocketsFull() {
-		bool full = GoldCarried ==  2 ? true : false;
+		bool full = gold_carried ==  2 ? true : false;
 		return full;
 	}
 	
-	public bool Thirsty() {
-		bool thirsty = Thirst == 10 ? true : false;
-		return thirsty;
+	public bool _thirsty() {
+		bool _thirsty = _thirst == 10 ? true : false;
+		return _thirsty;
 	}
 	
 	public void IncreaseFatigue() {
-		Fatigue++;
+		_fatigue++;
 	}
 	
 	public void ChangeState(FSMState<Miner> e) {
@@ -50,12 +50,12 @@ public class Miner : MonoBehaviour {
 	}
  
 	public void Update() {
-		Thirst++;
+		_thirst++;
 		FSM.Update();
 	}
 	
 	public void ChangeLocation(Locations l) {
-		Location = l;
+		_location = l;
 	}
 }
 
