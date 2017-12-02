@@ -20,5 +20,10 @@ public class ResourcesManager : MonoBehaviour {
 			_instance = this;
 		}
 	}
+
+	public bool NeedBeer()
+	{
+		return beer < 5;
+	}
 	
 }

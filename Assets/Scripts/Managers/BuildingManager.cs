@@ -53,7 +53,7 @@ public class BuildingManager : MonoBehaviour {
     {
         foreach(BeerMaker building in buildings)
         {
-            if (building.is_being_used == false && ResourcesManager.Instance.beer <= 5)
+            if (building.is_being_used == false && ResourcesManager.Instance.NeedBeer())
             {
                 OnDwarfNeeded(building);
             }
