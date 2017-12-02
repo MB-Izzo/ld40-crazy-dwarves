@@ -1,43 +1,37 @@
-﻿public class FiniteStateMachine <T>  {
-	private T _owner;
-	private FSMState<T> _current_state;
-	private FSMState<T> _previous_state;
-	private FSMState<T> _global_state;
-	
-	public void Awake()
-	{		
-		_current_state = null;
-		_previous_state = null;
-		_global_state = null;
-	}
-	
-	public void Configure(T owner, FSMState<T> InitialState) {
-		this._owner = owner;
-		ChangeState(InitialState);
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class StateMachine : MonoBehaviour {
+
+	private IState _current_state;
+	private IState _previous_text;
+
+	public void ChangeState(IState new_state)
+	{
+		if (this._current_state != null)
+		{
+			this._current_state.Exit();
+		}
+
+		this._previous_text = this._current_state;
+		this._current_state = new_state;
+		this._current_state.Enter();
 	}
 
-	public void Update()
+	public void ExecuteStateUpdate()
 	{
-		if (_global_state != null)  _global_state.Execute(_owner);
-		if (_current_state != null) _current_state.Execute(_owner);
+		IState running_state = this._current_state;
+		if (running_state != null)
+		{
+			running_state.Execute();
+		}
 	}
- 
-	public void ChangeState(FSMState<T> new_state)
-	{	
-		_previous_state = _current_state;
- 
-		if (_current_state != null)
-			_current_state.Exit(_owner);
- 
-		_current_state = new_state;
- 
-		if (_current_state != null)
-			_current_state.Enter(_owner);
-	}
- 
-	public void RevertToPreviousState()
+
+	public void SwitchToPreviousState()
 	{
-		if (_previous_state != null)
-			ChangeState(_previous_state);
+		this._current_state.Exit();
+		this._current_state = this._previous_text;
+		this._current_state.Enter();
 	}
-};
+}
