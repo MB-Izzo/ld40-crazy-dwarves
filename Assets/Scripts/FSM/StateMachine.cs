@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class StateMachine : MonoBehaviour {
-
+	
 	private IState _current_state;
 	private IState _previous_text;
 

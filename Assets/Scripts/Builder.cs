@@ -21,7 +21,9 @@ public class Builder : MonoBehaviour {
 			if (Input.GetMouseButton(0))
 			{
 				currently_placing.GetComponent<SpriteRenderer>().color = new Color(255,255,255, 1);
-				Instantiate(currently_placing, currently_placing.transform.position, Quaternion.identity);
+				GameObject go = Instantiate(currently_placing, currently_placing.transform.position, Quaternion.identity) as GameObject;
+				Building building = go.GetComponent<Building>();
+				BuildingManager.Instance.buildings.Add(building);
 				Destroy(currently_placing);
 			}
 		}

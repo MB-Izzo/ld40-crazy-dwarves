@@ -4,15 +4,16 @@ using UnityEngine;
 
 public class Dwarf : MonoBehaviour {
 
-	private StateMachine _fsm = new StateMachine();
+	private Vector3 brewery_pos;
+	private int _thirst = 100;
+	public int thirst { get { return _thirst; } }
 
 	// Use this for initialization
 	void Start () {
-		this._fsm.ChangeState(new GoTo(this.gameObject, this.transform.position, new Vector3(5, 0.5f, 0), 3f));
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		this._fsm.ExecuteStateUpdate();
+
 	}
 }
