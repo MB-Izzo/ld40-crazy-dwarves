@@ -24,8 +24,6 @@ public class GoTo : IState {
 	public void Enter()
 	{
 		_start_pos = _initial_position;
-		Debug.Log(_destination_pos);
-		Debug.Log("going to!");
 	}
 
 	public IState Execute()
@@ -33,7 +31,7 @@ public class GoTo : IState {
         // TODO: Time Manager.
 		float time_since_started = Time.time - _start_time;
 		float ratio = time_since_started / _duration;
-		_owner_gameobject.transform.position = Vector3.Lerp(_start_pos, _destination_pos, ratio);
+		_owner_gameobject.transform.position = Vector3.Lerp(_start_pos, new Vector3(_destination_pos.x, 0.5f, _destination_pos.z), ratio);
         return null;
 	}
 

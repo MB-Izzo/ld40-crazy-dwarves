@@ -5,7 +5,9 @@ using UnityEngine;
 public class Building : MonoBehaviour {
 
 	protected bool _is_being_used;
-	public bool is_being_used { get { return _is_being_used; } }
+	public bool is_being_used { get { return _is_being_used; } set { this._is_being_used = value; } }
+	public bool someone_travaling_to { get { return _is_being_used; } set { this._is_being_used = value; } }
+
 
 	// Use this for initialization
 	void Start () {

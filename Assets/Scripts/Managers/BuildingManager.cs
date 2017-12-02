@@ -12,11 +12,16 @@ public class BuildingManager : MonoBehaviour {
 
 	public List<Building> buildings { get; set; }
 
-    public delegate void EventOnBuildingCreated(Building new_building);
-    public EventOnBuildingCreated OnBuildingCreated;
+    public delegate void EventOnDwarfNeeded(Building new_building);
+    public EventOnDwarfNeeded OnDwarfNeeded;
+
+    // Placer
+    private GameObject currently_placing_obj;
+    public GameObject brewery_prefab;
+    
 
 	// Use this for initialization
-	void Start () {
+	void Awake () {
 		if (_instance != null && _instance != this)
 		{
 			Destroy(this.gameObject);
@@ -32,12 +37,27 @@ public class BuildingManager : MonoBehaviour {
 
     private void Update()
     {
-        // HACK ----------------------------
-        if ( Input.GetKeyUp(KeyCode.Space))
+        if (currently_placing_obj != null)
+		{
+			currently_placing_obj.transform.position = new Vector3(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, 0, 0);
+			if (Input.GetMouseButton(0))
+			{
+                CreateBuilding();
+			}
+		}
+
+        CallForDwarf();
+    }
+
+    private void CallForDwarf()
+    {
+        foreach(BeerMaker building in buildings)
         {
-            CreateBuilding();
+            if (building.is_being_used == false && ResourcesManager.Instance.beer <= 5)
+            {
+                OnDwarfNeeded(building);
+            }
         }
-        // ---------------------------------
     }
 
     private void CreateBuilding()
@@ -45,12 +65,19 @@ public class BuildingManager : MonoBehaviour {
         // HACK ----------------------------
         // TODO: Factory in charge of building creation + state machine
         GameObject new_building = Instantiate<GameObject>(_building_prefab);
-        new_building.transform.position = new Vector3(Random.value * 10.0f - 5.0f, Random.value * 10.0f - 5.0f, Random.value * 10.0f - 5.0f);
+        new_building.transform.position = new Vector3(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, 0, 0);
         Building b = new_building.GetComponent<Building>();
         buildings.Add(b);
-        if (OnBuildingCreated != null)
-            OnBuildingCreated(b);
+        Destroy(currently_placing_obj);
+        //if (OnDwarfNeeded != null)
+          //  OnDwarfNeeded(b);
         // ---------------------------------
-
     }
+
+    public void BuildBrewery()
+	{
+		GameObject go = Instantiate(brewery_prefab, Camera.main.ScreenToWorldPoint(Input.mousePosition), Quaternion.identity) as GameObject;
+		go.GetComponent<SpriteRenderer>().color = new Color(255, 255, 255, 0.5f);
+		currently_placing_obj = go;
+	}
 }
