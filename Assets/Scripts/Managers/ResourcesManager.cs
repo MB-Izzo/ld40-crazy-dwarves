@@ -11,6 +11,15 @@ public class ResourcesManager : MonoBehaviour {
 	public int meat;
 	public int gold;
 
+	public int beer_to_produce {get; set;}
+	public int nbr_to_sell
+	{
+		get
+		{
+			return (meat >=10 && beer >= 10) ? 2 : 1;
+		}
+	}
+
 	// Use this for initialization
 	void Start () {
 		if (_instance != null && _instance != this)
@@ -21,6 +30,7 @@ public class ResourcesManager : MonoBehaviour {
 		{
 			_instance = this;
 		}
+		gold = 60;
 	}
 
 	public bool NeedBeer()
@@ -39,7 +49,14 @@ public class ResourcesManager : MonoBehaviour {
 	}
 
 	private void Update() {
-
+		if (beer<=20)
+		{
+			beer_to_produce = 2;
+		}
+		else
+		{
+			beer_to_produce = 1;
+		}
 	}
 	
 }

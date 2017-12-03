@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BuildingManager : MonoBehaviour {
 
@@ -21,11 +22,17 @@ public class BuildingManager : MonoBehaviour {
     // Placer
     private GameObject currently_placing_obj;
     public GameObject brewery_prefab;
+    public int price_brewery;
     public GameObject kitchen_prefab;
+    public int price_kitchen;
 
     private string _current_building_name;
 
-    private Building _cart;
+    public Building _cart { get; set;}
+
+    public Button buy_dwarf;
+    public GameObject dwarf_prefab;
+    public int price_drarf;
     
 
 	// Use this for initialization
@@ -41,6 +48,7 @@ public class BuildingManager : MonoBehaviour {
 
 		buildings = new List<Building>();
         _cart = FindObjectOfType<Cart>();
+        buy_dwarf.onClick.AddListener(CreateDwarf);
 	}
 
 
@@ -57,49 +65,10 @@ public class BuildingManager : MonoBehaviour {
                 currently_placing_obj = null;
 			}
 		}
-
-        CallForDwarfWork();
-        CallForSell();
-
       
     }
 
-    private void CallForDwarfWork()
-    {
-
-        foreach(Building b in buildings)
-        {
-            if (b is BeerMaker)
-            {
-                if (b.is_being_used == false && ResourcesManager.Instance.NeedBeer())
-                {
-                    OnDwarfNeeded(b);
-                }
-            }
-
-            if (b is Kitchen)
-            {
-                if (b.is_being_used == false && ResourcesManager.Instance.NeedMeat())
-                {
-                    OnDwarfNeeded(b);
-                }
-            }
-           
-        }
-    }
-
-    private void CallForSell()
-    {
-        if (ResourcesManager.Instance.CanSell())
-        {
-            if (OnSellAvalaible != null)
-            {
-                OnSellAvalaible(_cart);
-            }       
-        }
-
-    }
-
+  
 
     private void CreateBuilding(string building_type)
     {
@@ -127,16 +96,35 @@ public class BuildingManager : MonoBehaviour {
 
     public void BuildBrewery()
 	{
-		currently_placing_obj = Instantiate(brewery_prefab, Camera.main.ScreenToWorldPoint(Input.mousePosition), Quaternion.identity) as GameObject;
-		currently_placing_obj.GetComponent<SpriteRenderer>().color = new Color(255, 255, 255, 0.5f);
-        _current_building_name = "brewery";
+        if (ResourcesManager.Instance.gold >= price_brewery)
+        {
+            currently_placing_obj = Instantiate(brewery_prefab, Camera.main.ScreenToWorldPoint(Input.mousePosition), Quaternion.identity) as GameObject;
+            currently_placing_obj.GetComponent<SpriteRenderer>().color = new Color(255, 255, 255, 0.5f);
+            _current_building_name = "brewery";
+            ResourcesManager.Instance.gold -= price_brewery;
+        }
+		
 
 	}
 
     public void BuildKitchen()
     {
-        currently_placing_obj = Instantiate(kitchen_prefab, Camera.main.ScreenToWorldPoint(Input.mousePosition), Quaternion.identity) as GameObject;
-		currently_placing_obj.GetComponent<SpriteRenderer>().color = new Color(255, 255, 255, 0.5f);
-        _current_building_name = "kitchen";
+        if (ResourcesManager.Instance.gold >= price_kitchen)
+        {
+            currently_placing_obj = Instantiate(kitchen_prefab, Camera.main.ScreenToWorldPoint(Input.mousePosition), Quaternion.identity) as GameObject;
+		    currently_placing_obj.GetComponent<SpriteRenderer>().color = new Color(255, 255, 255, 0.5f);
+            _current_building_name = "kitchen";
+            ResourcesManager.Instance.gold -= price_kitchen;
+
+        }
+    }
+
+    private void CreateDwarf()
+    {
+        if (ResourcesManager.Instance.gold >= price_drarf)
+        {
+            Instantiate(dwarf_prefab, new Vector3(0, 0.5f, 0), Quaternion.identity);
+            ResourcesManager.Instance.gold -= price_drarf;
+        }
     }
 }

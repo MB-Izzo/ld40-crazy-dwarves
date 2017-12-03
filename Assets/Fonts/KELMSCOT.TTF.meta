@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 6a9976e5d732192419c0cd5687ff5b3d
+timeCreated: 1512300594
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Kelmscott
+  fontNames:
+  - Kelmscott
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -11,6 +11,9 @@ public class Kitchen : Building {
 	public override void Use()
 	{
 		ResourcesManager.Instance.meat += 1;
-		Instantiate(anim_to_play, transform.position, Quaternion.identity);
+		Vector3 pos_to_play = new Vector3(transform.position.x + 0.5f, transform.position.y + 1, transform.position.z);
+		Instantiate(anim_to_play, pos_to_play, Quaternion.identity);
+		base.Use();
+
 	}
 }

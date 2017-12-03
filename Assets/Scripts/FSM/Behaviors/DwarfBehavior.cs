@@ -13,18 +13,34 @@ public class DwarfBehavior : MonoBehaviour
 
     private Building save_building;
 
+    private Job _job;
+
+    private static int nbr_instances;
+    private int id;
+
 	// Use this for initialization
 	void Start () {
         _fsm = new StateMachine();
-        BuildingManager.Instance.OnDwarfNeeded += OnNeeded;
-        BuildingManager.Instance.OnSellAvalaible += OnSell;
+        PlayerEventManager.Instance.OnDwarfNeeded += OnNeeded;
+        PlayerEventManager.Instance.OnSellAvalaible += OnSell;
+        nbr_instances++;
+        id = nbr_instances;
+        if (id == 1)
+        {
+            _job = Job.seller;
+        }
+        else
+        {
+            _job = Job.producer;
+        }
+        
 
     }
 
     private void OnDestroy()
     {
-        BuildingManager.Instance.OnDwarfNeeded -= OnNeeded;
-        BuildingManager.Instance.OnSellAvalaible -= OnSell;
+        PlayerEventManager.Instance.OnDwarfNeeded -= OnNeeded;
+        PlayerEventManager.Instance.OnSellAvalaible -= OnSell;
 
     }
 
@@ -36,15 +52,17 @@ public class DwarfBehavior : MonoBehaviour
     /// <param name="new_building">Newly created building</param>
     private void OnNeeded(Building new_building)
     {
-        if ( new_building != null && new_building.is_being_used == false && current_state_type != eStateType.using_building && (ResourcesManager.Instance.NeedBeer() || ResourcesManager.Instance.NeedMeat())) 
+
+        if ( new_building != null && new_building.is_being_used == false && current_state_type != eStateType.using_building)
         {
             this._fsm.OverrideCurrentState(new GoTo(gameObject, new_building.transform.position, 3f, new_building));
+
         }
     }
 
     private void OnSell(Building new_building)
     {
-        if (new_building != null && new_building.is_being_used == false && current_state_type != eStateType.using_building)
+        if (new_building != null && new_building.is_being_used == false && current_state_type != eStateType.carting && _job == Job.seller)
         {
             this._fsm.OverrideCurrentState(new GoTo(gameObject, new_building.transform.position, 3f, new_building));
 
@@ -53,8 +71,14 @@ public class DwarfBehavior : MonoBehaviour
 
     // Update is called once per frame
     void Update () {
-        Debug.Log(current_state_type);
 		this._fsm.Update();
+        Debug.Log(_job);
+        Debug.Log(id); 
 	}
 
+}
+
+public enum Job {
+    seller,
+    producer
 }
