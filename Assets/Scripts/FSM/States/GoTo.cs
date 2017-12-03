@@ -35,7 +35,10 @@ public class GoTo : IState {
 		if (_owner_gameobject.transform.position.x == _destination_pos.x && _building != null)
 		{
         	return new UseBuilding(_owner_gameobject, _building);
-
+		}
+		if (_building.is_being_used)
+		{
+			return new Idle(_owner_gameobject, new Vector3(0, 0.5f, 0), 2f);
 		}
 		return null;
 	}

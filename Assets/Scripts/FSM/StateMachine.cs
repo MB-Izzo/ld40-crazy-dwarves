@@ -7,7 +7,8 @@ public enum eStateType
     none = 0,
     moving,
     using_building,
-    idle
+    idle,
+    carting
 }
 
 public class StateMachine

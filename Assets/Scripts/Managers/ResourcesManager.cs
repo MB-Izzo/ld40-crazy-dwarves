@@ -8,6 +8,8 @@ public class ResourcesManager : MonoBehaviour {
 	public static ResourcesManager Instance { get { return _instance; } }
 
 	public int beer;
+	public int meat;
+	public int gold;
 
 	// Use this for initialization
 	void Start () {
@@ -23,7 +25,21 @@ public class ResourcesManager : MonoBehaviour {
 
 	public bool NeedBeer()
 	{
-		return beer < 5;
+		return beer < 10;
+	}
+	
+	public bool NeedMeat()
+	{
+		return meat < 10;
+	}
+
+	public bool CanSell()
+	{
+		return meat >=2 && beer >= 2;
+	}
+
+	private void Update() {
+
 	}
 	
 }
